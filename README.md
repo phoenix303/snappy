@@ -1,2 +1,4 @@
 # snappy
-A collection of instructive SNAP programs
+A collection of instructive SNAP programs.
+
+#New
