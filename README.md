@@ -1,28 +1,27 @@
-# Reviews Api
+# Review Summations Api
 
 All URIs are relative to **SUBMISSION_API_URL** configuration variable.
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**getReviews**](ReviewsApi.md#getReviews) | **GET** /reviews | Get all reviews. 
-[**headReviews**](ReviewsApi.md#headReviews) | **HEAD** /reviews | Get only response status and headers information but no response body for the endpoint. 
-[**createReview**](ReviewsApi.md#createReview) | **POST** /reviews | Create a review. 
-[**getReview**](ReviewsApi.md#getReview) | **GET** /reviews/{reviewId} | Get the review. 
-[**headReview**](ReviewsApi.md#headReview) | **HEAD** /reviews/{reviewId} | Get only response status and headers information but no response body for the endpoint. 
-[**updateReview**](ReviewsApi.md#updateReview) | **PUT** /reviews/{reviewId} | Fully update the review. 
-[**patchReview**](ReviewsApi.md#patchReview) | **PATCH** /reviews/{reviewId} | Partially update the review. 
-[**deleteReview**](ReviewsApi.md#deleteReview) | **DELETE** /reviews/{reviewId} | Delete the review. 
+[**searchReviewSummations**](ReviewSummationsApi.md#searchReviewSummations) | **GET** /reviewSummations | Search review summations.
+[**headReviewSummations**](ReviewSummationsApi.md#headReviews) | **HEAD** /reviewSummations | Same to search review summations, but only response status and headers information return.
+[**createReviewSummation**](ReviewSummationsApi.md#createReview) | **POST** /reviewSummations | Create a review summation.
+[**getReviewSummation**](ReviewSummationsApi.md#getReview) | **GET** /reviewSummations/{reviewSummationId} | Get the review summation.
+[**headReviewSummation**](ReviewSummationsApi.md#headReview) | **HEAD** /reviewSummations/{reviewSummationId} | Same to get review summation, but only response status and headers information return.
+[**updateReviewSummation**](ReviewSummationsApi.md#updateReview) | **PUT** /reviewSummations/{reviewSummationId} | Fully update review summation.
+[**patchReviewSummation**](ReviewSummationsApi.md#patchReview) | **PATCH** /reviewSummations/{reviewSummationId} | Partially update review summation.
+[**deleteReviewSummation**](ReviewSummationsApi.md#deleteReview) | **DELETE** /reviewSummations/{reviewSummationId} | Delete the review summation.
 
-<a name="getReviews"></a>
+<a name="searchReviewSummations"></a>
+# **searchReviewSummations**
+> searchReviewSummations(reqQuery)
 
-# **getReviews**
-> getReviews(reqQuery)
-
-Get reviews. Link headers are sent back and they have rel set to prev, next, first, last and contain the relevant URL.
+Search review summations. Link headers are sent back and they have rel set to prev, next, first, last and contain the relevant URL.
 
 ### Example
 ```javascript
-const submissionApi = require('topcoder-submission-api-wrapper')
+const submissionApi = require('tc-submission-api-wrapper')
 const submissionApiClient = submissionApi(_.pick(config,
       ['AUTH0_URL', 'AUTH0_AUDIENCE', 'TOKEN_CACHE_TIME',
         'AUTH0_CLIENT_ID', 'AUTH0_CLIENT_SECRET', 'SUBMISSION_API_URL',
@@ -30,33 +29,32 @@ const submissionApiClient = submissionApi(_.pick(config,
 
 const reqQuery = {
   page: 1,
-  perPage: 3,
-  score: 95.5,
-  typeId: 'a12bc180-65ab-42ec-a945-5fd21dec1567',
-  reviewerId: 'a12bc280-65ab-42ec-a945-5fd21dec1567',
-  scoreCardId: 'a12bd180-65ab-42ec-a945-5fd21dec1567',
-  submissionId: '48555121-73ba-416d-b139-ee3646aef988'
+  perPage: 10,
+  submissionId: '16883c9e-50e0-4388-b7ac-52d66aded166',
+  aggregateScore: 90,
+  scoreCardId: 30001101,
+  isPassing: true
 }
 
 // Promise model
 submissionApiClient
-  .getReviews(reqQuery)
+  .searchReviewSummations(reqQuery)
   .then(result => console.log(result.body, result.status))
   .catch(err => console.log(err))
 
 // Async / await model
-await submissionApiClient.getReviews(reqQuery)
+await submissionApiClient.searchReviewSummations(reqQuery)
 ```
 
 ### Parameters
 
 Name | Type | Description
 ------------- | ------------- | -------------
- **reqQuery** | [**ReviewCriteria**](ReviewCriteria.md) | the criteria for reviews 
+ **reqQuery** | [**SearchSummationsCriteria**](SearchSummationsCriteria.md)| the search summations criteria
 
 ### Return type
 
-Array of [**ReviewType**](ReviewType.md)
+Array of [**ReviewSummation**](ReviewSummation.md)
 
 ### Authorization
 
@@ -67,16 +65,15 @@ Array of [**ReviewType**](ReviewType.md)
  - **Content-Type**: application/json
  - **Accept**: application/json
 
-<a name="headReviews"></a>
+<a name="headReviewSummations"></a>
+# **headReviewSummations**
+> headReviewSummations(reqQuery)
 
-# **headReviews**
-> headReviews(reqQuery)
-
-Get only response status and headers information but no response body for the endpoint.
+Same to search review summations, but only response status and headers information return.
 
 ### Example
 ```javascript
-const submissionApi = require('topcoder-submission-api-wrapper')
+const submissionApi = require('tc-submission-api-wrapper')
 const submissionApiClient = submissionApi(_.pick(config,
       ['AUTH0_URL', 'AUTH0_AUDIENCE', 'TOKEN_CACHE_TIME',
         'AUTH0_CLIENT_ID', 'AUTH0_CLIENT_SECRET', 'SUBMISSION_API_URL',
@@ -84,29 +81,28 @@ const submissionApiClient = submissionApi(_.pick(config,
 
 const reqQuery = {
   page: 1,
-  perPage: 3,
-  score: 95.5,
-  typeId: 'a12bc180-65ab-42ec-a945-5fd21dec1567',
-  reviewerId: 'a12bc280-65ab-42ec-a945-5fd21dec1567',
-  scoreCardId: 'a12bd180-65ab-42ec-a945-5fd21dec1567',
-  submissionId: '48555121-73ba-416d-b139-ee3646aef988'
+  perPage: 10,
+  submissionId: '16883c9e-50e0-4388-b7ac-52d66aded166',
+  aggregateScore: 90,
+  scoreCardId: 30001101,
+  isPassing: true
 }
 
 // Promise model
 submissionApiClient
-  .headReviews(reqQuery)
+  .headReviewSummations(reqQuery)
   .then(result => console.log(result.status))
   .catch(err => console.log(err))
 
 // Async / await model
-await submissionApiClient.headReviews(reqQuery)
+await submissionApiClient.headReviewSummations(reqQuery)
 ```
 
 ### Parameters
 
 Name | Type | Description
 ------------- | ------------- | -------------
- **reqQuery** | [**ReviewCriteria**](ReviewCriteria.md) | the criteria for reviews 
+ **reqQuery** | [**SearchSummationsCriteria**](SearchSummationsCriteria.md)| the search criteria
 
 ### Return type
 
@@ -121,48 +117,47 @@ null (empty response body)
  - **Content-Type**: application/json
  - **Accept**: application/json
 
-<a name="createReview"></a>
+<a name="createReviewSummation"></a>
+# **createReviewSummation**
+> createReviewSummation(reqBody)
 
-# **createReview**
-> createReview(reqBody)
-
-Create a review.
+Create a review summation.
 
 ### Example
 ```javascript
-const submissionApi = require('topcoder-submission-api-wrapper')
+const submissionApi = require('tc-submission-api-wrapper')
 const submissionApiClient = submissionApi(_.pick(config,
       ['AUTH0_URL', 'AUTH0_AUDIENCE', 'TOKEN_CACHE_TIME',
         'AUTH0_CLIENT_ID', 'AUTH0_CLIENT_SECRET', 'SUBMISSION_API_URL',
         'AUTH0_PROXY_SERVER_URL']))
 
 const reqBody = {
-  score: 95.5,
-  typeId: 'a12bc180-65ab-42ec-a945-5fd21dec1567',
-  reviewerId: 'a12bc280-65ab-42ec-a945-5fd21dec1567',
-  scoreCardId: 'a12bd180-65ab-42ec-a945-5fd21dec1567',
-  submissionId: '48555121-73ba-416d-b139-ee3646aef988'
+  submissionId: '16883c9e-50e0-4388-b7ac-52d66aded166',
+  aggregateScore: 90,
+  scoreCardId: 30001101,
+  isPassing: true,
+  metadata: { abc: 'def' }
 }
 
 // Promise model
 submissionApiClient
-  .createReview(reqBody)
+  .createReviewSummation(reqBody)
   .then(result => console.log(result.body, result.status))
   .catch(err => console.log(err))
 
 // Async / await model
-await submissionApiClient.createReview(reqBody)
+await submissionApiClient.createReviewSummation(reqBody)
 ```
 
 ### Parameters
 
 Name | Type | Description
 ------------- | ------------- | -------------
- **reqBody** | [**ReviewData**](ReviewData.md) | the review data 
+ **reqBody** | [**ReviewSummationData**](ReviewSummationData.md)| the review summation data
 
 ### Return type
 
-[**Review**](Review.md)
+[**ReviewSummation**](ReviewSummation.md)
 
 ### Authorization
 
@@ -173,41 +168,40 @@ Name | Type | Description
  - **Content-Type**: application/json
  - **Accept**: application/json
 
-<a name="getReview"></a>
+<a name="getReviewSummation"></a>
+# **getReviewSummation**
+> getReviewSummation(reviewSummationId)
 
-# **getReview**
-> getReview(reviewId)
-
-Get the review by id.
+Get the review summation by id.
 
 ### Example
 ```javascript
-const submissionApi = require('topcoder-submission-api-wrapper')
+const submissionApi = require('tc-submission-api-wrapper')
 const submissionApiClient = submissionApi(_.pick(config,
       ['AUTH0_URL', 'AUTH0_AUDIENCE', 'TOKEN_CACHE_TIME',
         'AUTH0_CLIENT_ID', 'AUTH0_CLIENT_SECRET', 'SUBMISSION_API_URL',
         'AUTH0_PROXY_SERVER_URL']))
 
-let reviewId = '8f4e8b6a-0ad2-4ff6-ab19-afeb102ff3b4'
+const reviewSummationId = '4cdce3cf-a9e9-4f29-bfe8-a0139a159fa8'
 
 // Promise model
 submissionApiClient
-  .getReview(reviewId)
+  .getReviewSummation(reviewSummationId)
   .then(result => console.log(result.body, result.status))
   .catch(err => console.log(err))
 
 // Async / await model
-await submissionApiClient.getReview(reviewId)
+await submissionApiClient.getReviewSummation(reviewSummationId)
 ```
 ### Parameters
 
 Name | Type | Description
 ------------- | ------------- | -------------
- **reviewId** | String | the review id 
+ **reviewSummationId** | String | the review summation id
 
 ### Return type
 
-[**Review**](Review.md)
+[**ReviewSummation**](ReviewSummation.md)
 
 ### Authorization
 
@@ -218,42 +212,41 @@ Name | Type | Description
  - **Content-Type**: application/json
  - **Accept**: application/json
 
-<a name="headReview"></a>
+<a name="headReviewSummation"></a>
+# **headReviewSummation**
+> headReviewSummation(reviewSummationId)
 
-# **headReview**
-> headReview(reviewId)
-
-Get only response status and headers information but no response body for the endpoint.
+Same to get review summation, but only response status and headers information return.
 
 ### Example
 ```javascript
-const submissionApi = require('topcoder-submission-api-wrapper')
+const submissionApi = require('tc-submission-api-wrapper')
 const submissionApiClient = submissionApi(_.pick(config,
       ['AUTH0_URL', 'AUTH0_AUDIENCE', 'TOKEN_CACHE_TIME',
         'AUTH0_CLIENT_ID', 'AUTH0_CLIENT_SECRET', 'SUBMISSION_API_URL',
         'AUTH0_PROXY_SERVER_URL']))
 
-let reviewId = '8f4e8b6a-0ad2-4ff6-ab19-afeb102ff3b4'
+const reviewSummationId = '4cdce3cf-a9e9-4f29-bfe8-a0139a159fa8'
 
 // Promise model
 submissionApiClient
-  .headReview(reviewId)
+  .headReviewSummation(reviewSummationId)
   .then(result => console.log(result.status))
   .catch(err => console.log(err))
 
 // Async / await model
-await submissionApiClient.headReview(reviewId)
+await submissionApiClient.headReviewSummation(reviewSummationId)
 ```
 
 ### Parameters
 
 Name | Type | Description
 ------------- | ------------- | -------------
- **reviewId** | String | the review id 
+ **reviewSummationId** | String | the review summation id
 
 ### Return type
 
-[**Review**](Review.md)
+null (empty response body)
 
 ### Authorization
 
@@ -264,50 +257,49 @@ Name | Type | Description
  - **Content-Type**: application/json
  - **Accept**: application/json
 
-<a name="updateReview"></a>
+<a name="updateReviewSummation"></a>
+# **updateReviewSummation**
+> updateReviewSummation(reviewSummationId, reqBody)
 
-# **updateReview**
-> updateReview(reviewId, reqBody)
-
-Fully update review.
+Fully update review summation.
 
 ### Example
 ```javascript
-const submissionApi = require('topcoder-submission-api-wrapper')
+const submissionApi = require('tc-submission-api-wrapper')
 const submissionApiClient = submissionApi(_.pick(config,
       ['AUTH0_URL', 'AUTH0_AUDIENCE', 'TOKEN_CACHE_TIME',
         'AUTH0_CLIENT_ID', 'AUTH0_CLIENT_SECRET', 'SUBMISSION_API_URL',
         'AUTH0_PROXY_SERVER_URL']))
 
-let reviewId = '8f4e8b6a-0ad2-4ff6-ab19-afeb102ff3b4'
+const reviewSummationId = '4cdce3cf-a9e9-4f29-bfe8-a0139a159fa8'
 const reqBody = {
-  score: 99.5,
-  typeId: 'a12bc180-65ab-42ec-a945-5fd21dec1567',
-  reviewerId: 'a12bc280-65ab-42ec-a945-5fd21dec1567',
-  scoreCardId: 'a12bd180-65ab-42ec-a945-5fd21dec1567',
-  submissionId: '48555121-73ba-416d-b139-ee3646aef988'
+  submissionId: '16883c9e-50e0-4388-b7ac-52d66aded166',
+  aggregateScore: 90,
+  scoreCardId: 30001101,
+  isPassing: true,
+  metadata: { abc: 'def' }
 }
 
 // Promise model
 submissionApiClient
-  .updateReview(reviewId, reqBody)
+  .updateReviewSummation(reviewSummationId, reqBody)
   .then(result => console.log(result.body, result.status))
   .catch(err => console.log(err))
 
 // Async / await model
-await submissionApiClient.updateReview(reviewId, reqBody)
+await submissionApiClient.updateReviewSummation(reviewSummationId, reqBody)
 ```
 
 ### Parameters
 
 Name | Type | Description
 ------------- | ------------- | -------------
- **reviewId** | String | the review id 
- **reqBody** | [**ReviewData**](ReviewData.md) | the review data 
+ **reviewSummationId** | String | the review summation id
+ **reqBody** | [**ReviewSummationData**](ReviewSummationData.md)| the review summation data
 
 ### Return type
 
-[**Review**](Review.md)
+[**ReviewSummation**](ReviewSummation.md)
 
 ### Authorization
 
@@ -318,46 +310,49 @@ Name | Type | Description
  - **Content-Type**: application/json
  - **Accept**: application/json
 
-<a name="patchReview"></a>
+<a name="patchReviewSummation"></a>
+# **patchReviewSummation**
+> patchReviewSummation(reviewSummationId, reqBody)
 
-# **patchReview**
-> patchReview(reviewId, reqBody)
-
-Partially update review.
+Partially update review summation.
 
 ### Example
 ```javascript
-const submissionApi = require('topcoder-submission-api-wrapper')
+const submissionApi = require('tc-submission-api-wrapper')
 const submissionApiClient = submissionApi(_.pick(config,
       ['AUTH0_URL', 'AUTH0_AUDIENCE', 'TOKEN_CACHE_TIME',
         'AUTH0_CLIENT_ID', 'AUTH0_CLIENT_SECRET', 'SUBMISSION_API_URL',
         'AUTH0_PROXY_SERVER_URL']))
 
-let reviewId = '8f4e8b6a-0ad2-4ff6-ab19-afeb102ff3b4'
+const reviewSummationId = '4cdce3cf-a9e9-4f29-bfe8-a0139a159fa8'
 const reqBody = {
-  score: 90.5
+  submissionId: '16883c9e-50e0-4388-b7ac-52d66aded166',
+  aggregateScore: 90,
+  scoreCardId: 30001101,
+  isPassing: true,
+  metadata: { abc: 'def' }
 }
 
 // Promise model
 submissionApiClient
-  .patchReview(reviewId, reqBody)
+  .patchReviewSummation(reviewSummationId, reqBody)
   .then(result => console.log(result.body, result.status))
   .catch(err => console.log(err))
 
 // Async / await model
-await submissionApiClient.patchReview(reviewId, reqBody)
+await submissionApiClient.patchReviewSummation(reviewSummationId, reqBody)
 ```
 
 ### Parameters
 
 Name | Type | Description
 ------------- | ------------- | -------------
- **reviewId** | String | the review id 
- **reqBody** | [**ReviewData**](ReviewData.md) | the review data 
+ **reviewSummationId** | String | the review summation id
+ **reqBody** | [**ReviewSummationData**](ReviewSummationData.md)| the review summation data
 
 ### Return type
 
-[**Review**](Review.md)
+[**ReviewSummation**](ReviewSummation.md)
 
 ### Authorization
 
@@ -368,38 +363,37 @@ Name | Type | Description
  - **Content-Type**: application/json
  - **Accept**: application/json
 
-<a name="deleteReview"></a>
+<a name="deleteReviewSummation"></a>
+# **deleteReviewSummation**
+> deleteReviewSummation(reviewSummationId)
 
-# **deleteReview**
-> deleteReview(reviewId)
-
-Delete review by id.
+Delete review summation by id.
 
 ### Example
 ```javascript
-const submissionApi = require('topcoder-submission-api-wrapper')
+const submissionApi = require('tc-submission-api-wrapper')
 const submissionApiClient = submissionApi(_.pick(config,
       ['AUTH0_URL', 'AUTH0_AUDIENCE', 'TOKEN_CACHE_TIME',
         'AUTH0_CLIENT_ID', 'AUTH0_CLIENT_SECRET', 'SUBMISSION_API_URL',
         'AUTH0_PROXY_SERVER_URL']))
 
-let reviewId = '8f4e8b6a-0ad2-4ff6-ab19-afeb102ff3b4'
+const reviewSummationId = '4cdce3cf-a9e9-4f29-bfe8-a0139a159fa8'
 
 // Promise model
 submissionApiClient
-  .deleteReview(reviewId)
+  .deleteReviewSummation(reviewSummationId)
   .then(result => console.log(result.status))
   .catch(err => console.log(err))
 
 // Async / await model
-await submissionApiClient.deleteReview(reviewId)
+await submissionApiClient.deleteReviewSummation(reviewSummationId)
 ```
 
 ### Parameters
 
 Name | Type | Description
 ------------- | ------------- | -------------
- **reviewId** | String | the review id 
+ **reviewSummationId** | String | the review summation id
 
 ### Return type
 
